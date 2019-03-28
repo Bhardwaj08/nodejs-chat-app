@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>nodeChan</title>
+  <style>
+    * {
+      background-color: rgb(232, 255, 255);
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font: 13px Helvetica, Arial;
+    }
+
+    form {
+      background: rgb(143, 238, 166);
+      border: 1px rgb(146, 255, 143);
+      padding: 3px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    form input {
+      border: 0;
+      padding: 10px;
+      width: 90%;
+      margin-right: .5%;
+    }
+
+    form button {
+      width: 9%;
+      background: #a3fddb;
+      color: black;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    form button:hover {
+      background-color: rgb(102, 212, 99);
+      color: white;
+    }
+
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #messages {
+      padding: 5px 10px;
+      font-size: 125%;
+    }
+
+    #messages p:nth-child(odd) {
+      background: rgb(201, 255, 195);
+    }
+
+    #title {
+      border-radius: 15px 50px 30px;
+      background: rgb(127, 230, 127);
+      padding: 20px;
+      width: 150px;
+      height: 70px;
+      color: rgb(27, 27, 27);
+      text-shadow: 1px 1px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <br>
+  <h2 id='title'> nodeChan </h2>
+  <br><br>
+  <ul id="messages">
+    <div id="lines"></div>
+  </ul>
+  <form action="">
+    <input id="m" autocomplete="off" /><button>Send</button>
+  </form>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.js"
+    integrity="sha256-5i/mQ300M779N2OVDrl16lbohwXNUdzL/R2aVUXyXWA=" crossorigin="anonymous"></script>
+  <script>
+    const socket = io();
+    
+    $('form').submit(() => {
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+
+    socket.on('chat message', (new_message) => {
+      $('#messages').append(new_message);
+      // $('#messages').append($('<li>').text( uname + " >> " + msg)); 
+    });
+
+  </script>
+
+</body>
+
+</html>
